@@ -1,0 +1,25 @@
+//unset everything so everthing can be styled from scratch
+// *{
+//     all:unset;
+// }
+
+.powermenu {
+    font-family: "JetBrains Mono";
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.dateTime {
+    font-family: "JetBrains Mono";
+    font-size: 1.1em;
+    color:red;
+    padding: 0 1.2rem 0 1rem;
+}
+.button-reb, .button-quit, .button-off {
+    padding: .2rem .2rem .3rem;
+}
+
+.eww_panel {
+    background-color: black;
+    padding: 1rem;
+}

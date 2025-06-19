@@ -1,0 +1,95 @@
+;all used variables are defined at the top of the file to keep them organized
+
+;Defines where to call eww commands
+(defvar eww "~/eww/target/release")
+
+;Polls the system time every 10 seconds and formats it as 12 hour clock 
+(defpoll time 
+      :interval "10s"
+      :initial "12:00"
+      "date '+%H:%M %p, %A %B %d'")
+
+(defwidget powerButton []
+      (box 
+            :class "powerButton"
+            :hexpand true
+            :orientation "horiztonal"
+            "󰐥"))
+
+(defwidget hardwareMonitor []
+      (box
+            :hexpand true
+            :orientation "horizontal"
+            "hwdMonitor"))
+            
+
+; (defwidget systray []
+;       (box
+;             :hexpand true
+;             :orientation
+;             "systray"))
+
+(defwidget musicPlayer []
+      (box 
+            :hexpand true
+            :orientation "horizontal"
+            "musicPlayer"))
+
+; defines the dateTime widget, which displays the current date and time
+(defwidget dateTime []
+      (box
+            :class "dateTime"
+            :orientation "horizontal"
+            time))
+
+; ;;Left, Center and Right side of panels. These are sectioned like this so that widgets can be rearranged without needing to reformat their alignment
+; ;;Figure out making the boxes first and have their layout working before implementing functionality for the widgets
+
+; ;;Left side of panel
+(defwidget left []
+      (box 
+            :orientation "horizontal"
+            :spacing 5
+            :halign "start"
+            (powerButton)
+            (hardwareMonitor)
+            ))
+
+;Center of bar
+(defwidget center []
+      (box
+            :orientation "horizontal"
+            :spacing 5
+            :halign "center"
+            ;(systray)
+            "systray here"))
+
+;Right side of panel
+(defwidget right []
+      (box
+            :orientation "horizontal"
+            :spacing 2
+            :halign "end"
+            (musicPlayer)
+            (dateTime)))
+
+;panel widget to unify the left, center and right sections under one scss class
+(defwidget panel [] 
+      (box
+            :class "eww_panel"
+            :orientation "horizontal"
+            (left)
+            (center)
+            (right)
+            ))
+
+;;Panel Window
+(defwindow panel
+          :monitor 0
+          :geometry (geometry :x "0%" :y "0%" :width "100%" :height "5.1%" :anchor "bottom center")
+          :stacking "fg"
+          ;:reserve (struts :distance "5.1%%" :side "bottom")
+          :windowtype "dock"
+          :wm-ignore true
+      (panel))
+
