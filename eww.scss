@@ -13,10 +13,19 @@
     font-family: "JetBrains Mono";
     font-size: 1.1em;
     color:red;
-    padding: 0 1.2rem 0 1rem;
+    padding: 0 1.2rem 0 0rem;
 }
 .button-reb, .button-quit, .button-off {
     padding: .2rem .2rem .3rem;
+}
+.spotifyIcon {
+    font-family: "JetBrains Mono";
+    font-size: 1.7em;
+    min-width: 20px;
+    margin-top: 2px;
+    margin-right: 5px;
+    margin-bottom:-3px;
+    color: green;
 }
 
 .eww_panel {

@@ -6,10 +6,10 @@
 (defvar eww "~/eww/target/release")
 (defvar musicHovered false)
 (defpoll musicPlayingStatus :interval "2s" :initial " " "~/.config/eww/bar/scripts/music_playing_status")
-(deflisten currentSong :initial " Temp Song - Temp Artist" "playerctl metadata --player=spotify  --format {{title}} - {{artist}} --follow")
+(deflisten currentSong :initial " Temp Song - Temp Artist" "playerctl metadata --player=spotify  --format '{{title}} - {{artist}}' --follow")
 
 ;Polls the system time every 10 seconds and formats it as 12 hour clock 
-(defpoll time 
+(defpoll time     
       :interval "10s"
       :initial "12:00"
       "date '+%I:%M %p, %A %B %d'")
@@ -38,55 +38,159 @@
 ;             :orientation
 ;             "systray"))
 
-; (defwidget music [] 
-;   (eventbox :onhover "${eww} update music_reveal=true"
-; 			  :onhoverlost "${eww} update music_reveal=false"
-; 		(box :class "module-2" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false" 
-; 			(box :class "song_cover_art" :vexpand "false" :hexpand "false" :style "background-image: url('${cover_art}');")
-; 			(button :class "song" :wrap "true" :onclick "~/.config/eww/bar/scripts/pop music" song)
-; 	    (revealer :transition "slideright"
-; 			      :reveal music_reveal
-; 			      :duration "350ms"
-;           (box :vexpand "false" :hexpand "false" :oreintation "h" 
-;                     (button :class "song_btn_prev" :onclick "~/.config/eww/bar/scripts/music_info --prev" "")
-; 					(button :class "song_btn_play" :onclick "~/.config/eww/bar/scripts/music_info --toggle" song_status)
-; 					(button :class "song_btn_next" :onclick "~/.config/eww/bar/scripts/music_info --next" ""))))))
+;  (defwidget music []     
+;     (eventbox 
+;       :onhover "${eww} update music_reveal=true"
+;       :onhoverlost "${eww} update music_reveal=false"
+;       (box 
+;         :class "music_box"
+;         :orientation "h" 
+;         :spacing 0
+;         :space-evenly "false"
+;         :halign "start"
+;         (eventbox
+;           :cursor "pointer"
+;           (box 
+;             :space_evenly "false"
+;             :halign "start"
+;             :tooltip "${title} by ${artist}"
+;             (button
+;               :onclick "scripts/popup_music"
+;               (image
+;                 :class "media_art"
+;                 :path cover
+;                 :image-height 40
+;                 :image-width 40))))
+;         (box
+;           :class "media_data"
+;           :orientation "v"
+;           :space-evenly "false"
+;           :vexpand "false"
+;           :hexpand "false"
+;           :valign "start"
+;           :halign "start"
+;           (box
+;             :orientation "v"
+;             :space-evenly "false"
+;             :vexpand "true"
+;             :hexpand "true"
+;             :valign "end"
+;             :halign "fill"
+;             (revealer
+;               :reveal "${!music_reveal}"
+;               :transition "slidedown"
+;               :duration "350ms"
+;               (box
+;                 :orientation "v"
+;                 :valign "fill"
+;                 :halign "fill"
+;               (label
+;                 :class "media_title"
+;                 :halign "center"
+;                 :markup title_parsed
+;                 :limit-width 15
+;                 :wrap "true"
+;                 :show_truncated "true")))
+;             (revealer
+;               :reveal music_reveal
+;               :transition "slideup"
+;               :duration "350ms"
+;               (box 
+;                 :orientation "h"
+;                 :halign "center"
+;                 :class "media_buttons"
+;                 :space-evenly false
+;                 (eventbox 
+;                   :cursor "pointer"
+;                   (button 
+;                     :class "prev_button"
+;                     :onclick "scripts/media_control --prev" 
+;                     :tooltip "Previous"
+;                     ""))
+;                 (eventbox 
+;                   :cursor "pointer"
+;                   (button 
+;                     :class "toggle_button"
+;                     :onclick "scripts/media_control --toggle" 
+;                     :tooltip "Play/Pause"
+;                     "${media_status}"))
+;                 (eventbox
+;                   :cursor "pointer"
+;                   (button 
+;                     :class "next_button"
+;                     :onclick "scripts/media_control --next" 
+;                     :tooltip "Next"
+;                     "")))))
+;           (box 
+;             :space-evenly "false"
+;             :class media_bar_class
+;             :halign "center"
+;             :vexpand "false"
+;             :hexpand "false"
+;             (eventbox
+;               :cursor "pointer"
+;               :onhover "${eww} update media_bar_class=bar_highlighted && ${eww} update media_bar_is_active=true"
+;               :onhoverlost "${eww} update media_bar_class=bar_normal && ${eww} update media_bar_is_active=false"
+;               (scale
+;                 :active media_bar_is_active
+;                 :min 0
+;                 :max length
+;                 :value position
+;                 :orientation "h"
+;                 :tooltip "Seek"
+;                 :onchange "scripts/media_control --seek {} ${media_bar_is_active}"
+;                 )))))))
 
 (defwidget musicPlayer []
       (eventbox
             :onhover "${eww} update musicHovered=true"
             :onhoverlost "${eww} update musicHovered=false"
             (box 
+                  :class "musicPlayer"
                   :orientation "horizontal"
+                  :halign "center"
+                  :spacing 0
                   :space-evenly false
-                  (button 
-                        :onclick "spotify"
-                        :class "spotifyIcon"
-                        "")
-                  ;Current song that's playing
+                  (eventbox
+                        :cursor "pointer"
+                        (button 
+                              :onclick "xdotool key super+7"
+                              :class "spotifyIcon"
+                              :vexpand false
+                              :tooltip "Spotify"
+                              ""
+                        )
+                  )
+                  ; ;Current song that's playing
                   (box 
                         :class "currentSong"
                         :orientation "horizontal"
-                        currentSong)
-                  (revealer
-                        :transition "slideup"
-                        :reveal musicHovered
-                        :duration "100ms"
-                        (box 
-                              :orientation "horizontal"
-                              (button
-                                    :class "musicControl"
-                                    :onclick "playerctl --player=spotify previous"
-                                    "󰒮")
-                              (button 
-                                    :class "musicControl"
-                                    :onclick "playerctl --player=spotify play-pause"
-                                    musicPlayingStatus)
-                              (button
-                                    :class "musicControl"
-                                    :onclick "playerctl --player=spotify next"
-                                    "󰒭"))
-                        ))
+                        currentSong
+                  )
+                  ; (revealer
+                  ;       :transition "slideup"
+                  ;       :reveal musicHovered
+                  ;       :duration "100ms"
+                  ;       (box 
+                  ;             :orientation "horizontal"
+                  ;             (button
+                  ;                   :class "musicControl"
+                  ;                   :onclick "playerctl --player=spotify previous"
+                  ;                   "󰒮"
+                  ;             )
+                  ;             (button 
+                  ;                   :class "musicControl"
+                  ;                   :onclick "playerctl --player=spotify play-pause"
+                  ;                   musicPlayingStatus
+                  ;             )
+                  ;             (button
+                  ;                   :class "musicControl"
+                  ;                   :onclick "playerctl --player=spotify next"
+                  ;                   "󰒭"
+                  ;             )
+                  ;       )
+                  ; )
+            )
       )
 )
 
@@ -143,8 +247,8 @@
 ; ======================================================================
 
 (defwindow panel
-          :monitor 1
-          :geometry (geometry :x "0%" :y "0%" :width "100%" :height "4.5%" :anchor "bottom center")
+          :monitor 0
+          :geometry (geometry :x "0%" :y "0%" :width "100%" :height "5.0%" :anchor "bottom center")
           :stacking "fg"
           ;:reserve (struts :distance "5.1%%" :side "bottom")
           :windowtype "dock"
