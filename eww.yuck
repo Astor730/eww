@@ -20,13 +20,15 @@
 
 (defwidget powerButton []
       (box 
-            :class "powerButton"
+            ;systemctl suspend sleep command
+            :class "powerMenu"
             :hexpand true
             :orientation "horiztonal"
             "󰐥"))
 
 (defwidget hardwareMonitor []
       (box
+            :class "hardwareMonitor"
             :hexpand true
             :orientation "horizontal"
             "hwdMonitor"))
@@ -156,6 +158,9 @@
                         (button 
                               :onclick "xdotool key super+7"
                               :class "spotifyIcon"
+                              :width 20
+                              :height 20
+                              :halign "start"
                               :vexpand false
                               :tooltip "Spotify"
                               ""
@@ -167,29 +172,29 @@
                         :orientation "horizontal"
                         currentSong
                   )
-                  ; (revealer
-                  ;       :transition "slideup"
-                  ;       :reveal musicHovered
-                  ;       :duration "100ms"
-                  ;       (box 
-                  ;             :orientation "horizontal"
-                  ;             (button
-                  ;                   :class "musicControl"
-                  ;                   :onclick "playerctl --player=spotify previous"
-                  ;                   "󰒮"
-                  ;             )
-                  ;             (button 
-                  ;                   :class "musicControl"
-                  ;                   :onclick "playerctl --player=spotify play-pause"
-                  ;                   musicPlayingStatus
-                  ;             )
-                  ;             (button
-                  ;                   :class "musicControl"
-                  ;                   :onclick "playerctl --player=spotify next"
-                  ;                   "󰒭"
-                  ;             )
-                  ;       )
-                  ; )
+                  (revealer
+                        :transition "slideup"
+                        :reveal musicHovered
+                        :duration "300ms"
+                        (box 
+                              :orientation "vertical"
+                              (button
+                                    :class "musicControl"
+                                    :onclick "playerctl --player=spotify previous"
+                                    "󰒮"
+                              )
+                              (button 
+                                    :class "musicControl"
+                                    :onclick "playerctl --player=spotify play-pause"
+                                    musicPlayingStatus
+                              )
+                              (button
+                                    :class "musicControl"
+                                    :onclick "playerctl --player=spotify next"
+                                    "󰒭"
+                              )
+                        )
+                  )
             )
       )
 )

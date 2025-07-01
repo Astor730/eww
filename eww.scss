@@ -3,31 +3,61 @@
 //     all:unset;
 // }
 
-.powermenu {
+
+//Powermenu
+.powerMenu {
     font-family: "JetBrains Mono";
     font-size: 20px;
     font-weight: bold;
+    border: 1px solid #ccc;
 }
 
+.button-reb, .button-quit, .button-off {
+    padding: .2rem .2rem .3rem;
+}
+
+//Hardware Monitor
+.hardwareMonitor {
+    border: 1px solid #ccc;
+}
+
+//Systray
+.systray {
+    font-size: 10px;
+}
+
+//Music
+.musicPlayer {
+    font-family: "JetBrains Mono";
+    border: 1px solid #ccc;
+}
+
+.currentSong {
+    font-size: 14px;
+    margin-left: 20px;
+    color: red;
+    border: 1px solid #ccc;
+}
+
+
+.spotifyIcon {
+    font-size: 20px;
+    color: green;
+    background-color: rgba(#fff7f7, 0);
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+//Date and time scss
 .dateTime {
     font-family: "JetBrains Mono";
     font-size: 1.1em;
     color:red;
-    padding: 0 1.2rem 0 0rem;
-}
-.button-reb, .button-quit, .button-off {
-    padding: .2rem .2rem .3rem;
-}
-.spotifyIcon {
-    font-family: "JetBrains Mono";
-    font-size: 1.7em;
-    min-width: 20px;
-    margin-top: 2px;
-    margin-right: 5px;
-    margin-bottom:-3px;
-    color: green;
+    padding: 0 1.2rem 0 1.0rem;
+    border: 1px solid white;
 }
 
+//Panel scss
 .eww_panel {
     background-color: black;
     padding: 1rem;
