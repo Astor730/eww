@@ -4,207 +4,79 @@
 
 ;Defines where to call eww commands
 (defvar eww "~/eww/target/release")
-(defvar musicHovered false)
+(defvar musicClicked false)
 (defpoll musicPlayingStatus :interval "2s" :initial " " "~/.config/eww/bar/scripts/music_playing_status")
+; current tied to spotify but the plyaer can be changed if a different music client is used
 (deflisten currentSong :initial " Temp Song - Temp Artist" "playerctl metadata --player=spotify  --format '{{title}} - {{artist}}' --follow")
 
 ;Polls the system time every 10 seconds and formats it as 12 hour clock 
 (defpoll time     
-      :interval "10s"
-      :initial "12:00"
-      "date '+%I:%M %p, %A %B %d'")
+	:interval "10s"
+	:initial "12:00"
+	"date '+%I:%M %p, %A %B %d'")
 
 ; ======================================================================
 ; =====                   Widget section                          ======
 ; ======================================================================
 
-(defwidget powerButton []
+(defwidget hardwareMonitor []
+	(box
+		:class "hardwareMonitor"
+		:hexpand true
+		:orientation "horizontal"
+		"hardware monitor here"))
+
+;make currently selected workspace color Red and non selected white
+(defwidget workspaceWork []
+	(box 
+		:class "workSpace"
+		:hexpand true
+		:orientation "horizontal"
+		"Work"))
+
+(defwidget powerMenu []
       (box 
             ;systemctl suspend sleep command
             :class "powerMenu"
             :hexpand true
-            :orientation "horiztonal"
+            :orientation "horizontal"
             "󰐥"))
 
-(defwidget hardwareMonitor []
-      (box
-            :class "hardwareMonitor"
-            :hexpand true
-            :orientation "horizontal"
-            "hwdMonitor"))
-            
-
-; (defwidget systray []
-;       (box
-;             :hexpand true
-;             :orientation
-;             "systray"))
-
-;  (defwidget music []     
-;     (eventbox 
-;       :onhover "${eww} update music_reveal=true"
-;       :onhoverlost "${eww} update music_reveal=false"
-;       (box 
-;         :class "music_box"
-;         :orientation "h" 
-;         :spacing 0
-;         :space-evenly "false"
-;         :halign "start"
-;         (eventbox
-;           :cursor "pointer"
-;           (box 
-;             :space_evenly "false"
-;             :halign "start"
-;             :tooltip "${title} by ${artist}"
-;             (button
-;               :onclick "scripts/popup_music"
-;               (image
-;                 :class "media_art"
-;                 :path cover
-;                 :image-height 40
-;                 :image-width 40))))
-;         (box
-;           :class "media_data"
-;           :orientation "v"
-;           :space-evenly "false"
-;           :vexpand "false"
-;           :hexpand "false"
-;           :valign "start"
-;           :halign "start"
-;           (box
-;             :orientation "v"
-;             :space-evenly "false"
-;             :vexpand "true"
-;             :hexpand "true"
-;             :valign "end"
-;             :halign "fill"
-;             (revealer
-;               :reveal "${!music_reveal}"
-;               :transition "slidedown"
-;               :duration "350ms"
-;               (box
-;                 :orientation "v"
-;                 :valign "fill"
-;                 :halign "fill"
-;               (label
-;                 :class "media_title"
-;                 :halign "center"
-;                 :markup title_parsed
-;                 :limit-width 15
-;                 :wrap "true"
-;                 :show_truncated "true")))
-;             (revealer
-;               :reveal music_reveal
-;               :transition "slideup"
-;               :duration "350ms"
-;               (box 
-;                 :orientation "h"
-;                 :halign "center"
-;                 :class "media_buttons"
-;                 :space-evenly false
-;                 (eventbox 
-;                   :cursor "pointer"
-;                   (button 
-;                     :class "prev_button"
-;                     :onclick "scripts/media_control --prev" 
-;                     :tooltip "Previous"
-;                     ""))
-;                 (eventbox 
-;                   :cursor "pointer"
-;                   (button 
-;                     :class "toggle_button"
-;                     :onclick "scripts/media_control --toggle" 
-;                     :tooltip "Play/Pause"
-;                     "${media_status}"))
-;                 (eventbox
-;                   :cursor "pointer"
-;                   (button 
-;                     :class "next_button"
-;                     :onclick "scripts/media_control --next" 
-;                     :tooltip "Next"
-;                     "")))))
-;           (box 
-;             :space-evenly "false"
-;             :class media_bar_class
-;             :halign "center"
-;             :vexpand "false"
-;             :hexpand "false"
-;             (eventbox
-;               :cursor "pointer"
-;               :onhover "${eww} update media_bar_class=bar_highlighted && ${eww} update media_bar_is_active=true"
-;               :onhoverlost "${eww} update media_bar_class=bar_normal && ${eww} update media_bar_is_active=false"
-;               (scale
-;                 :active media_bar_is_active
-;                 :min 0
-;                 :max length
-;                 :value position
-;                 :orientation "h"
-;                 :tooltip "Seek"
-;                 :onchange "scripts/media_control --seek {} ${media_bar_is_active}"
-;                 )))))))
+(defwidget workspaceGame []
+	(box 
+		:class "workSpace"
+		:hexpand true
+		:orientation "horizontal"
+		"Game"))
 
 (defwidget musicPlayer []
-      (eventbox
-            :onhover "${eww} update musicHovered=true"
-            :onhoverlost "${eww} update musicHovered=false"
+	(eventbox
+		:cursor "pointer"
+		(button
+            :onclick "scripts/music_window_toggle.sh"
             (box 
                   :class "musicPlayer"
                   :orientation "horizontal"
                   :halign "center"
                   :spacing 0
                   :space-evenly false
-                  (eventbox
-                        :cursor "pointer"
-                        (button 
-                              :onclick "xdotool key super+7"
-                              :class "spotifyIcon"
-                              :width 20
-                              :height 20
-                              :halign "start"
-                              :vexpand false
-                              :tooltip "Spotify"
-                              ""
-                        )
-                  )
                   ; ;Current song that's playing
                   (box 
                         :class "currentSong"
                         :orientation "horizontal"
                         currentSong
                   )
-                  (revealer
-                        :transition "slideup"
-                        :reveal musicHovered
-                        :duration "300ms"
-                        (box 
-                              :orientation "vertical"
-                              (button
-                                    :class "musicControl"
-                                    :onclick "playerctl --player=spotify previous"
-                                    "󰒮"
-                              )
-                              (button 
-                                    :class "musicControl"
-                                    :onclick "playerctl --player=spotify play-pause"
-                                    musicPlayingStatus
-                              )
-                              (button
-                                    :class "musicControl"
-                                    :onclick "playerctl --player=spotify next"
-                                    "󰒭"
-                              )
-                        )
-                  )
             )
       )
+	)
 )
 
 ; defines the dateTime widget, which displays the current date and time
 (defwidget dateTime []
-      (box
-            :class "dateTime"
-            :orientation "horizontal"
-            time))
+	(box
+		:class "dateTime"
+		:orientation "horizontal"
+		time))
 
 ; ;;Left, Center and Right side of panels. These are sectioned like this so that widgets can be rearranged without needing to reformat their alignment
 ; ;;Figure out making the boxes first and have their layout working before implementing functionality for the widgets
@@ -215,7 +87,6 @@
             :orientation "horizontal"
             :spacing 0
             :halign "start"
-            (powerButton)
             (hardwareMonitor)
             ))
 
@@ -225,8 +96,10 @@
             :orientation "horizontal"
             :spacing 5
             :halign "center"
-            ;(systray)
-            "systray here"))
+			(workspaceWork)
+			(powerMenu)
+			(workspaceGame)
+            ))
 
 ;Right side of panel
 (defwidget right []
@@ -260,3 +133,8 @@
           :wm-ignore true
       (panel))
 
+(defwindow music_window
+	:monitor 0
+	:geometry (geometry :x "50px" :y "50px" :width "50px" :height "50px")
+	:stacking "fg"
+	"Hello there")

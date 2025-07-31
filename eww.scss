@@ -1,8 +1,7 @@
-//unset everything so everthing can be styled from scratch
-// *{
-//     all:unset;
-// }
-
+//Workspaces
+.workSpace{
+  border: 1px solid #ccc
+}
 
 //Powermenu
 .powerMenu {
@@ -28,14 +27,14 @@
 
 //Music
 .musicPlayer {
-    font-family: "JetBrains Mono";
+    // font-family: "JetBrains Mono";
     border: 1px solid #ccc;
 }
 
 .currentSong {
     font-size: 14px;
     margin-left: 20px;
-    color: red;
+    color: white;
     border: 1px solid #ccc;
 }
 
@@ -52,13 +51,14 @@
 .dateTime {
     font-family: "JetBrains Mono";
     font-size: 1.1em;
-    color:red;
+    color:white;
     padding: 0 1.2rem 0 1.0rem;
     border: 1px solid white;
 }
 
 //Panel scss
 .eww_panel {
+    font-family: "JetBrains Mono";
     background-color: black;
     padding: 1rem;
 }
