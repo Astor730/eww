@@ -35,12 +35,12 @@
 		"Work"))
 
 (defwidget powerMenu []
-      (box 
-            ;systemctl suspend sleep command
-            :class "powerMenu"
-            :hexpand true
-            :orientation "horizontal"
-            "󰐥"))
+	(box 
+	;systemctl suspend sleep command
+		:class "powerMenu"
+		:hexpand true
+		:orientation "horizontal"
+		"󰐥"))
 
 (defwidget workspaceGame []
 	(box 
@@ -53,21 +53,21 @@
 	(eventbox
 		:cursor "pointer"
 		(button
-            :onclick "scripts/music_window_toggle.sh"
-            (box 
-                  :class "musicPlayer"
-                  :orientation "horizontal"
-                  :halign "center"
-                  :spacing 0
-                  :space-evenly false
-                  ; ;Current song that's playing
-                  (box 
-                        :class "currentSong"
-                        :orientation "horizontal"
-                        currentSong
-                  )
-            )
-      )
+			:onclick "scripts/music_window_toggle.sh"
+			(box 
+				:class "musicPlayer"
+				:orientation "horizontal"
+				:halign "center"
+				:spacing 0
+				:space-evenly false
+				; ;Current song that's playing
+				(box 
+					:class "currentSong"
+					:orientation "horizontal"
+					currentSong
+				)
+			)
+		)
 	)
 )
 
@@ -83,55 +83,55 @@
 
 ; ;;Left side of panel
 (defwidget left []
-      (box 
-            :orientation "horizontal"
-            :spacing 0
-            :halign "start"
-            (hardwareMonitor)
-            ))
+	(box 
+		:orientation "horizontal"
+		:spacing 0
+		:halign "start"
+		(hardwareMonitor)
+	))
 
 ;Center of bar
 (defwidget center []
-      (box
-            :orientation "horizontal"
-            :spacing 5
-            :halign "center"
-			(workspaceWork)
-			(powerMenu)
-			(workspaceGame)
-            ))
+	(box
+		:orientation "horizontal"
+		:spacing 5
+		:halign "center"
+		(workspaceWork)
+		(powerMenu)
+		(workspaceGame)
+		))
 
 ;Right side of panel
 (defwidget right []
-      (box
-            :orientation "horizontal"
-            :spacing 2
-            :halign "end"
-            (musicPlayer)
-            (dateTime)))
+	(box
+	:orientation "horizontal"
+	:spacing 2
+	:halign "end"
+	(musicPlayer)
+	(dateTime)))
 
 ;panel widget to unify the left, center and right sections under one scss class
 (defwidget panel [] 
-      (box
-            :class "eww_panel"
-            :orientation "horizontal"
-            (left)
-            (center)
-            (right)
-            ))
+	(box
+		:class "eww_panel"
+		:orientation "horizontal"
+		(left)
+		(center)
+		(right)
+	))
 
 ; ======================================================================
 ; =====                   Window section                          ======
 ; ======================================================================
 
 (defwindow panel
-          :monitor 0
-          :geometry (geometry :x "0%" :y "0%" :width "100%" :height "5.0%" :anchor "bottom center")
-          :stacking "fg"
-          ;:reserve (struts :distance "5.1%%" :side "bottom")
-          :windowtype "dock"
-          :wm-ignore true
-      (panel))
+	:monitor 0
+	:geometry (geometry :x "0%" :y "0%" :width "100%" :height "5.0%" :anchor "bottom center")
+	:stacking "fg"
+	:reserve (struts :distance "5.1%%" :side "bottom")
+	:windowtype "dock"
+	:wm-ignore true
+	(panel))
 
 (defwindow music_window
 	:monitor 0
