@@ -35,8 +35,11 @@
 		"Work"))
 
 (defwidget powerMenu []
-	(box 
+	(eventbox 
 	;systemctl suspend sleep command
+		:cursor "pointer"
+		(button
+			:onclick "scripts/power_menu_toggle")
 		:class "powerMenu"
 		:hexpand true
 		:orientation "horizontal"
@@ -135,6 +138,12 @@
 
 (defwindow music_window
 	:monitor 0
-	:geometry (geometry :x "50px" :y "50px" :width "50px" :height "50px")
+	:geometry (geometry :x "50px" :y "50px" :width "100px" :height "100px")
 	:stacking "fg"
 	"Hello there")
+
+(defwindow power_menu
+	:monitor 0
+	:geometry  (geometry :x "100px" :y "100px" :width "100px" :height "100px")
+	:stacking "fg"
+	"Hello from the power button")
